@@ -5,13 +5,14 @@ import os
 locationColumn = 1
 locationLine = 2
 
+#checks a players movement and either moves them, or doesnt if isCollision says no
 def move(key):
 	global locationColumn
 	global locationLine
 	global message
 	message = ' '
 	
-	####Player moves RIGHT
+########Player moves RIGHT
 	if( 'd' == key ):
 		
 		#sets previous location to a ' '
@@ -125,6 +126,7 @@ def playerInput(self):
 	keyPress = msvcrt.getch()
 	move(keyPress)
 
+#prints the maze
 def printMaze():
 	#clears the screen
 	os.system('cls')
