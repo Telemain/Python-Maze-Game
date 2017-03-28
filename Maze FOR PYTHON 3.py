@@ -141,6 +141,8 @@ print('You start in the top left corner, exit is in the bottom right corner.')
 difficult = input('Do you want the more difficult maze? (y/n)')
 
 #the actual maze made of 8s and spaces
+#2 different versions
+#mazes are in line format so they can be fairly easily edited and displayed
 if( 'y' == difficult ):
 	finalLine = 41
 
