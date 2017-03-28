@@ -1,9 +1,7 @@
 import msvcrt
 import os
-from mazeTemplates import *
-import mazeTemplates
 
-
+os.system('mode con: cols=90 lines=45')
 
 locationColumn = 1
 locationLine = 2
@@ -108,11 +106,13 @@ def lineAssignments():
 	lineGet = {1: line1, 2:line2, 3:line3, 4:line4, 5:line5, 6:line6, 7:line7, 8:line8, 9:line9, 10:line10, 11:line11, 12:line12, 13:line13, 14:line14, 15:line15, 16:line16, 17:line17, 18:line18, 19:line19, 20:line20, 21:line21, 22:line22, 23: line23, 24:line24, 25:line25, 26:line26, 27:line27, 28:line28, 29:line29, 30:line30, 31:line31, 32:line32, 33:line33, 34:line34, 35:line35, 36:line36, 37:line37, 38:line38, 39:line39, 40:line40, 41:line41}
 	print('lineassignmentsuccess')
 
+	
 #gets the players input and passes it on to the move function
 def playerInput(self):
 	keyPress = msvcrt.getch()
 	move(keyPress)
 
+	
 #prints the maze
 def printMaze():
 	#clears the screen
@@ -133,11 +133,11 @@ def printMaze():
 
 	print(message)
 
-
+###############################################################################################################################################################################################################################################################################################
 
 #opening message exmplaining game
 print('Use WASD to navigate the maze')
-print('You start in the top left corner')
+print('You start in the top left corner, exit is in the bottom right corner.')
 difficult = input('Do you want the more difficult maze? (y/n)')
 
 #the actual maze made of 8s and spaces
