@@ -16,6 +16,7 @@ def move(key):
 	if( 'd' == key ):
 		
 		#sets previous location to a ' '
+		#DOES NOT SET NEW LOCATION, PRINT SCREEN
 		temp2 = lineGet[locationLine]
 		temp2[locationColumn] = ' '
 		
