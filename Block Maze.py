@@ -291,7 +291,7 @@ print('Use WASD to navigate the maze')
 print('You start in the top left corner, exit is in the bottom right corner.')
 
 #gets users desired height and width
-print("Dimensions greater than 10 are not recommended unless you have a huge screen")
+print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
 h = eval(input('Enter the height: '))
 w = eval(input('Enter the width: '))
 
