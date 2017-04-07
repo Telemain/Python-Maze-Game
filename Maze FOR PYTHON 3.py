@@ -1,5 +1,6 @@
 import msvcrt
 import os
+from random import shuffle, randrange
 
 os.system('mode con: cols=90 lines=45')
 
@@ -14,7 +15,7 @@ def move(key):
 	global message
 	message = ' '
 
-########Player moves RIGHT
+####Player moves RIGHT
 	if( b'd' == key ):
 
 		#sets previous location to a ' '
