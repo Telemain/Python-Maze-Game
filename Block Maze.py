@@ -5,7 +5,7 @@ import msvcrt
 import os
 from random import shuffle, randrange
 
-os.system('mode con: cols=120 lines=50')
+os.system('mode con: cols=150 lines=75')
 
 locationColumn = 1
 locationLine = 2
