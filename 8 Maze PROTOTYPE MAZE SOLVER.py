@@ -6,6 +6,19 @@ import os
 from random import shuffle, randrange
 import time
 
+def show_exception_and_exit(exc_type, exc_value, tb):
+	import traceback
+	traceback.print_exception(exc_type, exc_value, tb)
+	raw_input("Press key to exit.")
+	raw_input("Press key to exit.")
+	raw_input("Press key to exit.")
+	raw_input("Press key to exit.")
+	raw_input("Press key to exit.")
+	raw_input("Press key to exit.")
+
+import sys
+sys.excepthook = show_exception_and_exit
+
 os.system('mode con: cols=150 lines=75')
 
 locationColumn = 1
@@ -105,6 +118,102 @@ def move(key):
 		else:
 			message = 'You move down one'
 
+#####AutoSolver
+	if( b'p' == key ):
+
+		
+
+		while(locationLine != finalLine):
+			autoSolver()
+
+def autoSolver():
+	direction = [1, 2, 3, 4]
+	shuffle(direction)
+
+	#loops through the four cardinal directions (which have been randomly sorted)
+	for d in direction:
+		
+		printMaze()
+		if( 1 == d):
+			moveRight()
+		if( 2 == d):
+			moveLeft()
+		if( 3 == d):
+			moveUp()
+		if( 4 == d):
+			moveDown()
+			
+	
+	
+	
+	
+
+def moveRight():
+	global locationColumn
+	global locationLine
+	locationColumn = locationColumn + 1
+
+	#Player hits wall
+	if( True == isCollision(locationColumn, locationLine) ):
+		locationColumn = locationColumn - 1
+	else:
+		setX = lineGet[locationLine]
+		setX[locationColumn] = 'X'
+		moveRight()
+
+def moveDown():
+	global locationColumn
+	global locationLine
+	locationLine = locationLine + 1
+
+	#Player hits wall
+	if( True == isCollision(locationColumn, locationLine) ):
+		locationLine = locationLine - 1
+	else:
+		setX = lineGet[locationLine]
+		setX[locationColumn] = 'X'
+		moveDown()
+
+def moveLeft():
+	global locationColumn
+	global locationLine
+	locationColumn = locationColumn - 1
+
+	#Player hits wall
+	if( True == isCollision(locationColumn, locationLine) ):
+		locationColumn = locationColumn + 1
+	else:
+		setX = lineGet[locationLine]
+		setX[locationColumn] = 'X'
+		moveLeft()
+
+def moveUp():
+	global locationColumn
+	global locationLine
+	locationLine = locationLine - 1
+
+	#Player hits wall
+	if( True == isCollision(locationColumn, locationLine) ):
+		locationLine = locationLine + 1
+	else:
+		setX = lineGet[locationLine]
+		setX[locationColumn] = 'X'
+		moveUp()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #checks if there is a 'wall' at the current coordinates
 def isCollision(column, line):
@@ -128,6 +237,7 @@ lineAssignments()
 #gets the players input and passes it on to the move function
 def playerInput(self):
 	keyPress = msvcrt.getch()
+	#keyPress = input("Enter")
 	move(keyPress)
 
 
@@ -136,7 +246,7 @@ def printMaze():
 
 	#clears the screen
 	os.system('cls')
-	
+
 	#sets current location to an X
 	setX = lineGet[locationLine]
 	setX[locationColumn] = 'X'
@@ -158,9 +268,9 @@ def generateMaze():
 	#creates the two lists that make up alternating rows
 	hor = [8, 8] * w + [8]
 	ver = [8, " "] * w + [8]
-	
+
 	global lineGet
-	
+
 	lineGet[1] = hor
 
 	#loops through the lines setting alternating rows to hor and ver and repeat
@@ -175,8 +285,8 @@ def generateMaze():
 
 	#creates a box of 0s surrounded by 1s to tell the wall breaking snake to stop
 	#for it has hit a wall or hit itself
-				#top--------- 	#left   #middle  #right	 #times height		#bottom------
-	wallStay = [[1] * (w + 2)] + [[1] + [0] * w +  [1]  for _ in range(h)] + [[1] * (w + 2)]
+				#top---------	#left	#middle	 #right	 #times height		#bottom------
+	wallStay = [[1] * (w + 2)] + [[1] + [0] * w +  [1]	for _ in range(h)] + [[1] * (w + 2)]
 
 
 	def makePaths(x, y):
@@ -277,10 +387,10 @@ def generateMaze():
 					#continues down the rabbit hole
 					makePaths(x, y)
 
-	
+
 	#runs the above function to clear away walls
 	#the math is to keep it away from the walls no matter the size
-	if( 2 >= w ):
+	if( 2 >= w or 2 >= h):
 		makePaths(1, 1)
 	else:
 		makePaths(randrange(w-2)+1, randrange(h-2)+1)
@@ -291,10 +401,11 @@ def generateMaze():
 #opening message exmplaining game
 print('Use WASD to navigate the maze')
 print('You start in the top left corner, exit is in the bottom right corner.')
+print("A 1600 x 900 screen's max size is 49 x 24")
 
-print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
-h = eval(input('Enter the height: '))
 w = eval(input('Enter the width: '))
+h = eval(input('Enter the height: '))
+
 
 #sets win condition
 finalLine = (h * 2) + 1
@@ -307,6 +418,7 @@ timeStart = time.time()
 while(locationLine != finalLine):
 	playerInput("")
 	printMaze()
+	print()
 
 #once theyve excaped the loop/maze
 timeEnd = time.time()

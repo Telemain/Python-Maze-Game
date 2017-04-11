@@ -4,6 +4,7 @@
 import msvcrt
 import os
 from random import shuffle, randrange
+import time
 
 os.system('mode con: cols=150 lines=75')
 
@@ -149,9 +150,9 @@ def printMaze():
 
 		#prints string with spaces inbetween each character
 		if( x % 2 == 0):
-			print(" ".join(linePrint))
+			print("".join(linePrint))
 		else:
-			print("█".join(linePrint))
+			print("".join(linePrint))
 
 	print(message)
 
@@ -280,8 +281,13 @@ def generateMaze():
 					#continues down the rabbit hole
 					makePaths(x, y)
 
+	
 	#runs the above function to clear away walls
-	makePaths(randrange(w), randrange(h))
+	#the math is to keep it away from the walls no matter the size
+	if( 2 >= w ):
+		makePaths(1, 1)
+	else:
+		makePaths(randrange(w-2)+1, randrange(h-2)+1)
 
 
 ######################################################################################################################################################################################################################################################
@@ -293,16 +299,14 @@ print('You start in the top left corner, exit is in the bottom right corner.')
 #gets users desired height and width
 print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
 h = eval(input('Enter the height: '))
-w = eval(input('Enter the width: '))
+w = eval(input('Enter the width (try 2x height): '))
 
-h *= 2
-w *= 2
-
+#sets win condition
 finalLine = (h * 2) + 1
 
 generateMaze()
-
 lineAssignments()
+timeStart = time.time()
 
 #loops everything until player reaches the bottom of the maze
 while(locationLine != finalLine):
@@ -310,6 +314,8 @@ while(locationLine != finalLine):
 	printMaze()
 
 #once theyve excaped the loop/maze
+timeEnd = time.time()
 print('YOU WON!')
-msvcrt.getch()
+print('And it only took you', timeEnd - timeStart, 'seconds')
+wait = input()
 
