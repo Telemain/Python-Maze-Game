@@ -113,147 +113,108 @@ def move(key):
 
 		global backTrack
 		backTrack = [[0] * w*3	for _ in range(h*3)]
+		wait = input(backTrack)
 
 		while(locationLine != finalLine):
-			autoSolver()
+			autoSolver(2, 2)
 
-def autoSolver():
+def autoSolver(x, y):
 
-	maze = [[0] * w*3	for _ in range(h*3)]
-	x = 0
-	y = 0
-
-
-	for x in range(1, finalLine + 1):
-
-		#temporarily stores the current list that was just joined as each was converted to a string
-		maze[x-1] = lineGet[x]
-
-	print(maze)
-
-	# tag = ' '  Mistake on my part
-	tag = 'o' # Mark so will not be revisited
-	maze[y][x] = tag # Mark maze point as handled
-
-	if self.solve(x+1,y) == True :  #right
-		tag = '>'
-	elif self.solve(x,y+1) == True :  #down
-		tag = 'v'
-	elif self.solve(x-1,y) == True :  #left
-		tag = '<'
-	elif self.solve(x,y-1) == True :  #up
-		tag = '^'
-	else:
-	  # All possible paths from here are false, back up and clear this point.
-	  tag = ' '
-	# Note that if none of the tests were true, tag is left as ' '
-	maze[y, x] = tag # Note C or C++ would use [x, y]
-	return (tag != ' ')
-
-
-
-
-
-def autoSolver2():
+	#sets the current location to a 1 on the wallStay array to mark that we've been here
+	backTrack[y][x] = 1
 
 	direction = [1, 2, 3, 4]
 	shuffle(direction)
-	print(direction)
-	global locationLine
-	global locationColumn
-
-	pMove = lineGet[locationLine]
-	pMove[locationColumn] = ' '
-
-	backTrack[locationLine][locationColumn] = 1
 
 	#loops through the four cardinal directions (which have been randomly sorted)
 	for d in direction:
 
-		locationLine = y * 2
-		locationColumn = x * 2 - 1
+		locationLine = y
+		locationColumn = x
 
-		printMaze()
-		if( 1 == d):
-			moveRight()
-		if( 2 == d):
-			moveLeft()
-		if( 3 == d):
-			moveUp()
-		if( 4 == d):
-			moveDown()
+	#####Maze moves RIGHT
+		if( 1 == d ):
 
-def moveRight():
-	global locationColumn
-	global locationLine
-	global x
+			#checks if we've been here before or if it's the edge
+			x += 1
+			if( backTrack[y][x] or isCollision(x, y) ):
 
-	pMove = lineGet[locationLine]
-	pMove[locationColumn] = ' '
-	locationColumn = locationColumn + 1
+				x -= 1
+				continue
 
-	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
-		locationColumn = locationColumn - 1
-	else:
-		setX = lineGet[locationLine]
-		setX[locationColumn] = 'X'
-		x += 1
-		autoSolver()
+			else:
 
-def moveDown():
-	global locationColumn
-	global locationLine
-	global y
+				#sets location one to the right to a blank
+				wallBreak = lineGet[locationLine]
 
-	pMove = lineGet[locationLine]
-	pMove[locationColumn] = ' '
-	locationLine = locationLine + 1
+				locationColumn = locationColumn + 1
+				wallBreak[locationColumn] = 'X'
 
-	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
-		locationLine = locationLine - 1
-	else:
-		setX = lineGet[locationLine]
-		setX[locationColumn] = 'X'
-		y += 1
-		autoSolver()
+				#continues down the rabbit hole
+				autoSolver(x, y)
 
-def moveLeft():
-	global locationColumn
-	global locationLine
-	global x
+	#####Maze moves LEFT
+		elif( 2 == d ):
 
-	pMove = lineGet[locationLine]
-	pMove[locationColumn] = ' '
-	locationColumn = locationColumn - 1
+			#checks if we've been here before or if it's the edge
+			x -= 1
+			if( backTrack[y][x] or isCollision(x, y) ):
 
-	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
-		locationColumn = locationColumn + 1
-	else:
-		setX = lineGet[locationLine]
-		setX[locationColumn] = 'X'
-		x -= 1
-		autoSolver()
+				x += 1
+				continue
 
-def moveUp():
-	global locationColumn
-	global locationLine
-	global y
+			else:
 
-	pMove = lineGet[locationLine]
-	pMove[locationColumn] = ' '
-	locationLine = locationLine - 1
+				#sets location one to the right to a blank
+				wallBreak = lineGet[locationLine]
 
-	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
-		locationLine = locationLine + 1
-	else:
-		setX = lineGet[locationLine]
-		setX[locationColumn] = 'X'
-		y -= 1
-		autoSolver()
+				locationColumn = locationColumn - 1
+				wallBreak[locationColumn] = ' '
+
+				#continues down the rabbit hole
+				autoSolver(x, y)
+
+	#####Maze moves UP
+		elif( 3 == d ):
+
+			#checks if we've been here before or if it's the edge
+			y -= 1
+			if( backTrack[y][x] or isCollision(x, y) ):
+
+				y += 1
+				continue
+
+			else:
+
+				#sets location one to the up to a blank
+				locationLine = locationLine - 1
+
+				wallBreak = lineGet[locationLine]
+				wallBreak[locationColumn] = ' '
+
+				#continues down the rabbit hole
+				autoSolver(x, y)
+
+	#####Maze moves DOWN
+		elif( 4 == d ):
+
+			#checks if we've been here before or if it's the edge
+			y += 1
+			if( backTrack[y][x] or isCollision(x, y) ):
+
+				y -= 1
+				continue
+
+			else:
+
+				#sets location one to the down to a blank
+				locationLine = locationLine + 1
+
+				wallBreak = lineGet[locationLine]
+				wallBreak[locationColumn] = ' '
+
+				#continues down the rabbit hole
+				autoSolver(x, y)
 
 
 
