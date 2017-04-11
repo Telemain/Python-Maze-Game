@@ -6,24 +6,14 @@ import os
 from random import shuffle, randrange
 import time
 
-def show_exception_and_exit(exc_type, exc_value, tb):
-	import traceback
-	traceback.print_exception(exc_type, exc_value, tb)
-	raw_input("Press key to exit.")
-	raw_input("Press key to exit.")
-	raw_input("Press key to exit.")
-	raw_input("Press key to exit.")
-	raw_input("Press key to exit.")
-	raw_input("Press key to exit.")
-
-import sys
-sys.excepthook = show_exception_and_exit
-
 os.system('mode con: cols=150 lines=75')
 
 locationColumn = 1
 locationLine = 2
 lineGet = {}
+backTrack = []
+y = 1
+x = 1
 
 h = 30
 w = 30
@@ -121,18 +111,68 @@ def move(key):
 #####AutoSolver
 	if( b'p' == key ):
 
-		
+		global backTrack
+		backTrack = [[0] * w*3	for _ in range(h*3)]
 
 		while(locationLine != finalLine):
 			autoSolver()
 
 def autoSolver():
+
+	maze = [[0] * w*3	for _ in range(h*3)]
+	x = 0
+	y = 0
+
+
+	for x in range(1, finalLine + 1):
+
+		#temporarily stores the current list that was just joined as each was converted to a string
+		maze[x-1] = lineGet[x]
+
+	print(maze)
+
+	# tag = ' '  Mistake on my part
+	tag = 'o' # Mark so will not be revisited
+	maze[y][x] = tag # Mark maze point as handled
+
+	if self.solve(x+1,y) == True :  #right
+		tag = '>'
+	elif self.solve(x,y+1) == True :  #down
+		tag = 'v'
+	elif self.solve(x-1,y) == True :  #left
+		tag = '<'
+	elif self.solve(x,y-1) == True :  #up
+		tag = '^'
+	else:
+	  # All possible paths from here are false, back up and clear this point.
+	  tag = ' '
+	# Note that if none of the tests were true, tag is left as ' '
+	maze[y, x] = tag # Note C or C++ would use [x, y]
+	return (tag != ' ')
+
+
+
+
+
+def autoSolver2():
+
 	direction = [1, 2, 3, 4]
 	shuffle(direction)
+	print(direction)
+	global locationLine
+	global locationColumn
+
+	pMove = lineGet[locationLine]
+	pMove[locationColumn] = ' '
+
+	backTrack[locationLine][locationColumn] = 1
 
 	#loops through the four cardinal directions (which have been randomly sorted)
 	for d in direction:
-		
+
+		locationLine = y * 2
+		locationColumn = x * 2 - 1
+
 		printMaze()
 		if( 1 == d):
 			moveRight()
@@ -142,63 +182,78 @@ def autoSolver():
 			moveUp()
 		if( 4 == d):
 			moveDown()
-			
-	
-	
-	
-	
 
 def moveRight():
 	global locationColumn
 	global locationLine
+	global x
+
+	pMove = lineGet[locationLine]
+	pMove[locationColumn] = ' '
 	locationColumn = locationColumn + 1
 
 	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) ):
+	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
 		locationColumn = locationColumn - 1
 	else:
 		setX = lineGet[locationLine]
 		setX[locationColumn] = 'X'
-		moveRight()
+		x += 1
+		autoSolver()
 
 def moveDown():
 	global locationColumn
 	global locationLine
+	global y
+
+	pMove = lineGet[locationLine]
+	pMove[locationColumn] = ' '
 	locationLine = locationLine + 1
 
 	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) ):
+	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
 		locationLine = locationLine - 1
 	else:
 		setX = lineGet[locationLine]
 		setX[locationColumn] = 'X'
-		moveDown()
+		y += 1
+		autoSolver()
 
 def moveLeft():
 	global locationColumn
 	global locationLine
+	global x
+
+	pMove = lineGet[locationLine]
+	pMove[locationColumn] = ' '
 	locationColumn = locationColumn - 1
 
 	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) ):
+	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
 		locationColumn = locationColumn + 1
 	else:
 		setX = lineGet[locationLine]
 		setX[locationColumn] = 'X'
-		moveLeft()
+		x -= 1
+		autoSolver()
 
 def moveUp():
 	global locationColumn
 	global locationLine
+	global y
+
+	pMove = lineGet[locationLine]
+	pMove[locationColumn] = ' '
 	locationLine = locationLine - 1
 
 	#Player hits wall
-	if( True == isCollision(locationColumn, locationLine) ):
+	if( True == isCollision(locationColumn, locationLine) or backTrack[y][x] ):
 		locationLine = locationLine + 1
 	else:
 		setX = lineGet[locationLine]
 		setX[locationColumn] = 'X'
-		moveUp()
+		y -= 1
+		autoSolver()
 
 
 
