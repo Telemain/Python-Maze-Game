@@ -298,8 +298,10 @@ print('You start in the top left corner, exit is in the bottom right corner.')
 
 #gets users desired height and width
 print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
+print("The maxx size for a 1600x900 screen is 49 by 24")
+w = 2 * eval(input('Enter the width: '))
 h = eval(input('Enter the height: '))
-w = eval(input('Enter the width (try 2x height): '))
+
 
 #sets win condition
 finalLine = (h * 2) + 1

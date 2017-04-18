@@ -293,8 +293,10 @@ print('Use WASD to navigate the maze')
 print('You start in the top left corner, exit is in the bottom right corner.')
 
 print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
-h = eval(input('Enter the height: '))
+print("The max size for a 1600X900 screen is 49 by 24")
 w = eval(input('Enter the width: '))
+h = eval(input('Enter the height: '))
+
 
 #sets win condition
 finalLine = (h * 2) + 1
