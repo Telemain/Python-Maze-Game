@@ -13,6 +13,7 @@ locationLine = 2
 lineGet = {}
 hardmode = "false"
 cheater = False
+message = ''
 
 h = 30
 w = 30
@@ -148,7 +149,7 @@ def lineAssignments():
 lineAssignments()
 
 #gets the players input and passes it on to the move function
-def playerInput(self):
+def playerInput():
 	keyPress = msvcrt.getch()
 	move(keyPress)
 
@@ -327,18 +328,24 @@ h = eval(input('Enter the height: '))
 #sets win condition
 finalLine = (h * 2) + 1
 
-generateMaze()
-lineAssignments()
-timeStart = time.time()
+while True:
+	os.system('cls')
+	
+	generateMaze()
+	lineAssignments()
+	timeStart = time.time()
 
-#loops everything until player reaches the bottom of the maze
-while(locationLine != finalLine):
-	playerInput("")
+	#loops everything until player reaches the bottom of the maze
+	while(locationLine != finalLine):
+		printMaze()
+		playerInput()
+
 	printMaze()
-
-#once theyve excaped the loop/maze
-timeEnd = time.time()
-print('YOU WON!')
-print('And it only took you', timeEnd - timeStart, 'seconds')
-wait = input()
+	#once theyve excaped the loop/maze
+	timeEnd = time.time()
+	print('YOU WON!')
+	print('And it only took you', timeEnd - timeStart, 'seconds')
+	wait = input()
+	locationLine = 2
+	locationColumn = 1
 
