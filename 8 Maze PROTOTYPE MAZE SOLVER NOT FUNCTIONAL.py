@@ -112,13 +112,20 @@ def move(key):
 	if( b'p' == key ):
 
 		global backTrack
-		backTrack = [[0] * w*3	for _ in range(h*3)]
-		wait = input(backTrack)
+		backTrack = [[1] * (w * 2 + 1)] + [[1] + [0] * w * 2 +  [1]	for _ in range(h* 2 + 1)] + [[1] * (w * 2 + 1)]
+		mazeWalls = []
+		
+		for x in range(1, finalLine + 1):
+			mazeWalls.append(lineGet[x].replace('8', '1') for item in lineGet)
+		
+		print(list(mazeWalls))
 
 		while(locationLine != finalLine):
-			autoSolver(2, 2)
+			autoSolver(1, 1)
 
 def autoSolver(x, y):
+
+	#print(x, y)
 
 	#sets the current location to a 1 on the wallStay array to mark that we've been here
 	backTrack[y][x] = 1
@@ -137,7 +144,7 @@ def autoSolver(x, y):
 
 			#checks if we've been here before or if it's the edge
 			x += 1
-			if( backTrack[y][x] or isCollision(x, y) ):
+			if( backTrack[y][x] ):
 
 				x -= 1
 				continue
@@ -158,7 +165,7 @@ def autoSolver(x, y):
 
 			#checks if we've been here before or if it's the edge
 			x -= 1
-			if( backTrack[y][x] or isCollision(x, y) ):
+			if( backTrack[y][x] ):
 
 				x += 1
 				continue
@@ -169,7 +176,7 @@ def autoSolver(x, y):
 				wallBreak = lineGet[locationLine]
 
 				locationColumn = locationColumn - 1
-				wallBreak[locationColumn] = ' '
+				wallBreak[locationColumn] = 'X'
 
 				#continues down the rabbit hole
 				autoSolver(x, y)
@@ -179,7 +186,7 @@ def autoSolver(x, y):
 
 			#checks if we've been here before or if it's the edge
 			y -= 1
-			if( backTrack[y][x] or isCollision(x, y) ):
+			if( backTrack[y][x] ):
 
 				y += 1
 				continue
@@ -190,7 +197,7 @@ def autoSolver(x, y):
 				locationLine = locationLine - 1
 
 				wallBreak = lineGet[locationLine]
-				wallBreak[locationColumn] = ' '
+				wallBreak[locationColumn] = 'X'
 
 				#continues down the rabbit hole
 				autoSolver(x, y)
@@ -200,7 +207,7 @@ def autoSolver(x, y):
 
 			#checks if we've been here before or if it's the edge
 			y += 1
-			if( backTrack[y][x] or isCollision(x, y) ):
+			if( backTrack[y][x] ):
 
 				y -= 1
 				continue
@@ -211,7 +218,7 @@ def autoSolver(x, y):
 				locationLine = locationLine + 1
 
 				wallBreak = lineGet[locationLine]
-				wallBreak[locationColumn] = ' '
+				wallBreak[locationColumn] = 'X'
 
 				#continues down the rabbit hole
 				autoSolver(x, y)
