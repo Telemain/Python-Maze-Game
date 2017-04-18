@@ -280,7 +280,7 @@ def generateMaze():
 	
 	#runs the above function to clear away walls
 	#the math is to keep it away from the walls no matter the size
-	if( 2 >= w ):
+	if( 2 >= w or 2 >= h):
 		makePaths(1, 1)
 	else:
 		makePaths(randrange(w-2)+1, randrange(h-2)+1)
