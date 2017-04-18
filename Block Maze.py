@@ -12,6 +12,7 @@ locationColumn = 1
 locationLine = 2
 lineGet = {}
 hardmode = "false"
+cheater = False
 
 h = 30
 w = 30
@@ -106,6 +107,21 @@ def move(key):
 		else:
 			message = 'You move down one'
 
+#####cheat key
+	if( b'p' == key ):
+	
+		#sets previous location to a ' '
+		pMove = lineGet[locationLine]
+		pMove[locationColumn] = ' '
+		
+		global cheater
+		if( False == cheater ):
+			cheater = True
+			message = 'Cheats enabled'
+		else:
+			cheater = False
+			message = 'Cheats disabled'
+
 
 #checks if there is a 'wall' at the current coordinates
 def isCollision(column, line):
@@ -114,7 +130,12 @@ def isCollision(column, line):
 	currentLine = lineGet[line]
 
 	#compares said character to an █
-	if( "█" == currentLine[column]):
+	#compares said character to an 8
+	if( '█' == currentLine[column] and False == cheater):
+		return True
+	elif(locationLine == 1 or (locationLine == h*2+1 and locationColumn != w*2-1 )):
+		return True
+	elif(locationColumn == 0 or locationColumn == w*2 ):
 		return True
 	else:
 		return False

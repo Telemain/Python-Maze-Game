@@ -11,9 +11,11 @@ os.system('mode con: cols=150 lines=75')
 locationColumn = 1
 locationLine = 2
 lineGet = {}
+message = ""
+cheater = False
 
-h = 30
-w = 30
+h = 10
+w = 10
 
 #declares the line variables so it doesnt get mad, 100 should be enough
 line1 = []; line2 = []; line3 = []; line4 = []; line5 = []; line6 = []; line7 = []; line8 = []; line9 = []; line10 = []; line11 = []; line12 = []; line13 = []; line14 = []; line15 = []; line16 = []; line17 = []; line18 = []; line19 = []; line20 = []; line21 = []; line22 = []; line23 = []; line24 = []; line25 = []; line26 = []; line27 = []; line28 = []; line29 = []; line30 = []; line31 = []; line32 = []; line33 = []; line34 = []; line35 = []; line36 = []; line37 = []; line38 = []; line39 = []; line40 = []; line41 = []; line42 = []; line43 = []; line44 = []; line45 = []; line46 = []; line47 = []; line48 = []; line49 = []; line50 = []; line51 = []; line52 = []; line53 = []; line54 = []; line55 = []; line56 = []; line57 = []; line58 = []; line59 = []; line60 = []; line61 = []; line62 = []; line63 = []; line64 = []; line65 = []; line66 = []; line67 = []; line68 = []; line69 = []; line70 = []; line71 = []; line72 = []; line73 = []; line74 = []; line75 = []; line76 = []; line77 = []; line78 = []; line79 = []; line80 = []; line81 = []; line82 = []; line83 = []; line84 = []; line85 = []; line86 = []; line87 = []; line88 = []; line89 = []; line90 = []; line91 = []; line92 = []; line93 = []; line94 = []; line95 = []; line96 = []; line97 = []; line98 = []; line99 = []; line100 = []
@@ -37,7 +39,7 @@ def move(key):
 	if( b'd' == key ):
 
 		#sets previous location to a ' '
-		#DOES NOT SET NEW LOCATION, PRINT SCREEN
+		#DOES NOT SET NEW LOCATION, PRINT MAZE DOES THAT
 		pMove = lineGet[locationLine]
 		pMove[locationColumn] = ' '
 
@@ -104,6 +106,23 @@ def move(key):
 		#Player just moves
 		else:
 			message = 'You move down one'
+	
+#####cheat key
+	if( b'p' == key ):
+	
+		#sets previous location to a ' '
+		pMove = lineGet[locationLine]
+		pMove[locationColumn] = ' '
+		
+		global cheater
+		if( False == cheater ):
+			cheater = True
+			message = 'Cheats enabled'
+		else:
+			cheater = False
+			message = 'Cheats disabled'
+
+		
 
 
 #checks if there is a 'wall' at the current coordinates
@@ -113,7 +132,11 @@ def isCollision(column, line):
 	currentLine = lineGet[line]
 
 	#compares said character to an 8
-	if( 8 == currentLine[column]):
+	if( 8 == currentLine[column] and False == cheater):
+		return True
+	elif(locationLine == 1 or (locationLine == h*2+1 and locationColumn != w*2-1 )):
+		return True
+	elif(locationColumn == 0 or locationColumn == w*2 ):
 		return True
 	else:
 		return False
@@ -126,7 +149,7 @@ def lineAssignments():
 lineAssignments()
 
 #gets the players input and passes it on to the move function
-def playerInput(self):
+def playerInput():
 	keyPress = msvcrt.getch()
 	move(keyPress)
 
@@ -292,7 +315,7 @@ def generateMaze():
 print('Use WASD to navigate the maze')
 print('You start in the top left corner, exit is in the bottom right corner.')
 
-print("Dimensions greater than 10 are not recommended unless you have a huge screen and larger than 20 will break it")
+print("Maximize screen before inputing anthing larger than 20x20")
 print("The max size for a 1600X900 screen is 49 by 24")
 w = eval(input('Enter the width: '))
 h = eval(input('Enter the height: '))
@@ -301,18 +324,24 @@ h = eval(input('Enter the height: '))
 #sets win condition
 finalLine = (h * 2) + 1
 
-generateMaze()
-lineAssignments()
-timeStart = time.time()
+while True:
+	os.system('cls')
+	
+	generateMaze()
+	lineAssignments()
+	timeStart = time.time()
 
-#loops everything until player reaches the bottom of the maze
-while(locationLine != finalLine):
-	playerInput("")
+	#loops everything until player reaches the bottom of the maze
+	while(locationLine != finalLine):
+		printMaze()
+		playerInput()
+
 	printMaze()
-
-#once theyve excaped the loop/maze
-timeEnd = time.time()
-print('YOU WON!')
-print('And it only took you', timeEnd - timeStart, 'seconds')
-wait = input()
+	#once theyve excaped the loop/maze
+	timeEnd = time.time()
+	print('YOU WON!')
+	print('And it only took you', timeEnd - timeStart, 'seconds')
+	wait = input()
+	locationLine = 2
+	locationColumn = 1
 
